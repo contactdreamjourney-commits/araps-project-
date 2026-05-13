@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Report - {{ student.name }}</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; padding: 40px; }
+        .container { max-width: 800px; margin: auto; border: 1px solid #ddd; padding: 30px; border-radius: 16px; }
+        h1 { color: #667eea; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #667eea; color: white; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Student Result Report</h1>
+    <p><strong>Name:</strong> {{ student.name }}</p>
+    <p><strong>Roll No:</strong> {{ student.roll_no }}</p>
+    <p><strong>Class:</strong> {{ student.class_name }}</p>
+    
+    <table>
+        <thead>
+            <tr><th>Subject</th><th>Marks</th><th>Term</th><th>Year</th></tr>
+        </thead>
+        <tbody>
+        {% for r in results %}
+        <tr>
+            <td>{{ r.subject.name }}</td>
+            <td>{{ r.marks }}</td>
+            <td>{{ r.term }}</td>
+            <td>{{ r.year }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No results found</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <button class="no-print" onclick="window.print();" style="margin-top: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 8px;">🖨️ Print / Save as PDF</button>
+</div>
+</body>
+</html>

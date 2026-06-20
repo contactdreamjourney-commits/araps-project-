@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'results.middleware.CurrentUserMiddleware',
+    'results.middleware.RoleSecurityMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -113,7 +115,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = '/login/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 STATIC_URL = '/static/'
@@ -137,25 +139,10 @@ JAZZMIN_SETTINGS = {
         "teachers.Teacher": "fas fa-chalkboard-teacher",
         "predictions.Prediction": "fas fa-brain",
     },
+    "topmenu_links": [
+        {"name": "Bulk Import Students", "url": "admin_import_students", "permissions": ["auth.add_user"]},
+    ],
     "custom_css": "admin/css/custom_admin.css",
 }
-STATIC_URL = '/static/'
-STATIC_ROOT = '/home/khurram369/araps_code/staticfiles'
-import dj_database_url
-import os
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Insert WhiteNoise middleware
-if 'whitenoise.middleware.WhiteNoiseMiddleware' not in MIDDLEWARE:
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-
-DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
-}
-
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-key')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['*']
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -11,6 +11,7 @@
     <p><strong>Student:</strong> {{ result.student.name }}</p>
     <p><strong>Subject:</strong> {{ result.subject.name }}</p>
     <p><strong>Marks:</strong> {{ result.marks }}</p>
+    <p><strong>Grade:</strong> {{ result.letter_grade }} (GP: {{ result.grade_point }})</p>
     <p><strong>Term:</strong> {{ result.term }} / {{ result.year }}</p>
     <form method="post">
         {% csrf_token %}

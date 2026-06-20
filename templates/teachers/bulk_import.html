@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARAPS | Teacher Bulk Import Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f0f4fc 0%, #e6edf7 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 0.8rem 1.5rem;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .card-modern {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-custom {
+            border-radius: 40px;
+            padding: 10px 24px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border: none;
+            color: white;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(30,60,114,0.3);
+            color: white;
+        }
+        .btn-outline-custom {
+            border: 2px solid #e2e8f0;
+            color: #475569;
+            background: transparent;
+        }
+        .btn-outline-custom:hover {
+            background: #f8fafc;
+            color: #1e3c72;
+        }
+        .error-list {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="{% url 'teacher_dashboard' %}"><i class="fas fa-chalkboard-teacher me-2"></i>ARAPS – Teacher</a>
+        <div>
+            <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3"><i class="fas fa-arrow-left me-1"></i>Back to Dashboard</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5 mb-5" style="max-width: 800px;">
+    <div class="card-modern">
+        <div class="text-center mb-4">
+            <div class="display-6 text-primary mb-2"><i class="fas fa-file-import"></i></div>
+            <h2 class="fw-bold text-dark">Bulk Import Results</h2>
+            <p class="text-muted">Upload a CSV or Excel sheet to batch create or update student marks.</p>
+        </div>
+
+        {% if success_message %}
+        <div class="alert alert-success alert-dismissible fade show rounded-4 p-3 mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ success_message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        {% if errors %}
+        <div class="mb-4">
+            <h5 class="text-danger fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>Import Failed (Wiped/Aborted)</h5>
+            <p class="text-muted small">No changes were saved. Please resolve the errors below and re-upload the file:</p>
+            <div class="error-list">
+                <ul class="mb-0 text-danger ps-3">
+                    {% for err in errors %}
+                    <li class="mb-1 small">{{ err }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="formFile" class="form-label fw-bold text-secondary">Choose Results File (.csv, .xlsx, .xls)</label>
+                <input class="form-control rounded-pill" type="file" id="formFile" name="file" accept=".csv, .xlsx, .xls" required>
+            </div>
+            <div class="d-flex gap-3 justify-content-between">
+                <a href="{% url 'download_results_template' %}" class="btn btn-outline-custom btn-custom">
+                    <i class="fas fa-download me-2"></i>Download Sample CSV Template
+                </a>
+                <button type="submit" class="btn btn-primary-custom btn-custom">
+                    <i class="fas fa-upload me-2"></i>Upload and Import
+                </button>
+            </div>
+        </form>
+
+        <div class="border-top pt-4">
+            <h6 class="fw-bold text-secondary mb-2">Instructions & Formatting:</h6>
+            <ul class="small text-muted ps-3 mb-0">
+                <li class="mb-1"><strong>Required Identifier</strong>: File must contain either <code>student_roll_no</code> or <code>username</code>.</li>
+                <li class="mb-1"><strong>Required Columns</strong>: <code>subject</code>, <code>term</code>, <code>year</code>, <code>marks</code>.</li>
+                <li class="mb-1"><strong>Validation Rules</strong>: 
+                    <ul>
+                        <li>Student roll number or username must exist in database.</li>
+                        <li>Subject must match database subject names exactly (e.g. <code>Programming Fundamentals</code>, case-insensitive).</li>
+                        <li>Term must be <code>Mid</code> or <code>Final</code>.</li>
+                        <li>Marks must be a float between <code>0</code> and <code>100</code>.</li>
+                    </ul>
+                </li>
+                <li class="mb-1"><strong>Transactional Safety</strong>: All rows are validated. If any row has a mistake, the entire upload is aborted, ensuring your database data remains consistent.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <i class="fas fa-chalkboard-teacher me-1"></i> ARAPS — Teacher Control Panel
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -18,7 +18,7 @@
             <input type="text" class="form-control" value="{{ result.subject.name }}" disabled>
         </div>
         <div class="mb-3">
-            <label>Marks</label>
+            <label>Marks (Current Grade: <strong>{{ result.letter_grade }}</strong>)</label>
             <input type="number" step="0.01" name="marks" class="form-control" value="{{ result.marks }}" required>
         </div>
         <div class="mb-3">

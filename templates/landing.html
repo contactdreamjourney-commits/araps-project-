@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARAPS | Academic Result Analysis & Prediction System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3c72;
+            --secondary: #2a5298;
+            --accent: #38bdf8;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(30, 60, 114, 0.05) 0%, rgba(42, 82, 152, 0.05) 100%), #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Premium Background Blobs */
+        .blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.15) 0%, rgba(42, 82, 152, 0.15) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .blob-1 { top: -10%; left: -10%; animation: float 12s infinite alternate; }
+        .blob-2 { bottom: -10%; right: -10%; animation: float 12s infinite alternate-reverse; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.1); }
+        }
+
+        .landing-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 36px;
+            padding: 3rem 2.5rem;
+            max-width: 680px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(30, 60, 114, 0.15);
+            text-align: center;
+            transform: scale(0.98);
+            animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes popIn {
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .college-tag {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: rgba(42, 82, 152, 0.08);
+            padding: 6px 18px;
+            border-radius: 50px;
+        }
+
+        .app-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .app-tagline {
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            letter-spacing: -0.2px;
+        }
+
+        .app-description {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .btn-portal {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 14px 44px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.35);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-portal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(30, 60, 114, 0.45);
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding-top: 2rem;
+        }
+
+        .feat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feat-icon {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feat-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        footer {
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="landing-card">
+    <span class="college-tag">
+        <i class="fas fa-university me-2"></i>Govt. Sadiq Egerton Graduate College Bahawalpur
+    </span>
+    <h1 class="app-title">ARAPS</h1>
+    <div class="app-tagline">Academic Result Analysis & Prediction System</div>
+    
+    <p class="app-description">
+        Welcome to the central academic portal. Perform real-time performance tracking, 
+        interactive dashboard analysis, role-based reporting, and predict future test marks 
+        using advanced algorithms.
+    </p>
+
+    <a href="{% url 'login' %}" class="btn-portal">
+        Access Portal <i class="fas fa-arrow-right"></i>
+    </a>
+
+    <div class="features-grid">
+        <div class="feat-item">
+            <div class="feat-icon"><i class="fas fa-chart-line"></i></div>
+            <span class="feat-label">Track Results</span>
+        </div>
+        <div class="feat-item">
+            <div class="feat-icon"><i class="fas fa-brain"></i></div>
+            <span class="feat-label">Predict Marks</span>
+        </div>
+        <div class="feat-item">
+            <div class="feat-icon"><i class="fas fa-users-cog"></i></div>
+            <span class="feat-label">Role Panels</span>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 ARAPS. All rights reserved. Powered by Django.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

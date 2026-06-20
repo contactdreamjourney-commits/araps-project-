@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARAPS | Teacher Control Panel</title>
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#1e3c72">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('{% static "service-worker.js" %}')
+                    .then(reg => console.log('ServiceWorker registered', reg))
+                    .catch(err => console.error('ServiceWorker registration failed', err));
+            });
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -105,19 +116,22 @@
 <!-- Navbar with ARAPS branding -->
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="#"><i class="fas fa-chalkboard-teacher me-2"></i>ARAPS – Teacher</a>
+        <a class="navbar-brand" href="{% url 'teacher_dashboard' %}"><i class="fas fa-chalkboard-teacher me-2"></i>ARAPS – Teacher</a>
         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
+                <li class="nav-item">
+                    <a class="nav-link active fw-semibold" href="{% url 'teacher_dashboard' %}"><i class="fas fa-list-check me-1"></i> Marks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="{% url 'mark_attendance' %}"><i class="fas fa-calendar-check me-1"></i> Attendance</a>
+                </li>
+            </ul>
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item me-3">
                     <span class="nav-link"><i class="fas fa-user-check me-1"></i> {{ user.username }}</span>
                 </li>
                 <li class="nav-item">
-<form action="/logout/" method="post" style="display: inline;">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
-        <i class="fas fa-sign-out-alt me-1"></i>Logout
-    </button>
-</form>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm rounded-pill px-3"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
                 </li>
             </ul>
         </div>
@@ -127,7 +141,10 @@
 <div class="container mt-4 mb-5">
     <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold" style="color: #1e293b;"><i class="fas fa-pen-alt me-2"></i>Marks Management</h2>
+        <div>
+            <h2 class="fw-bold" style="color: #1e293b;"><i class="fas fa-pen-alt me-2"></i>Marks Management</h2>
+            <p class="text-muted mb-0">Welcome, Teacher {{ request.user.get_full_name|default:request.user.username }}!</p>
+        </div>
         <div class="stat-badge"><i class="fas fa-chart-line"></i> Total Results: {{ results|length }}</div>
     </div>
 
@@ -181,7 +198,7 @@
             <table class="table table-modern">
                 <thead>
                     <tr>
-                        <th>Student</th><th>Subject</th><th>Marks</th><th>Term</th><th>Year</th><th>Actions</th>
+                        <th>Student</th><th>Subject</th><th>Marks</th><th>Grade</th><th>Term</th><th>Year</th><th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -190,6 +207,7 @@
                     <td class="fw-semibold">{{ r.student.name }} <span class="text-muted">({{ r.student.roll_no }})</span></td>
                     <td>{{ r.subject.name }}</td>
                     <td><span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2">{{ r.marks }}%</span></td>
+                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2">{{ r.letter_grade }}</span></td>
                     <td>{{ r.term|capfirst }}</td>
                     <td>{{ r.year }}</td>
                     <td>
@@ -198,11 +216,107 @@
                     </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="6" class="text-center py-4"><i class="fas fa-inbox me-2"></i>No results found. Add using the form above. </td></tr>
+                <tr><td colspan="7" class="text-center py-4"><i class="fas fa-inbox me-2"></i>No results found. Add using the form above. </td></tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Class Performance Section -->
+<div class="container mt-4 mb-5">
+    <div class="card-modern mb-4">
+        <h5 class="mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i>Class Performance Analytics</h5>
+        <!-- Filters -->
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label class="form-label">Subject</label>
+                <select name="analytics_subject" class="form-select rounded-pill" onchange="this.form.submit()">
+                    {% for sub in analytics_subjects %}
+                    <option value="{{ sub.id }}" {% if sub.id|stringformat:"s" == sel_subject_id %}selected{% endif %}>{{ sub.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Term</label>
+                <select name="analytics_term" class="form-select rounded-pill" onchange="this.form.submit()">
+                    {% for t in analytics_terms %}
+                    <option value="{{ t }}" {% if t == sel_term %}selected{% endif %}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Year</label>
+                <select name="analytics_year" class="form-select rounded-pill" onchange="this.form.submit()">
+                    {% for y in analytics_years %}
+                    <option value="{{ y }}" {% if y|stringformat:"s" == sel_year %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="stat-badge w-100 justify-content-center py-3 rounded-4" style="background:#eef5ff; font-size:1rem;">
+                    <i class="fas fa-users text-primary"></i>
+                    <span>Students in cohort: <strong>{{ chart_labels|length }}</strong></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stat-badge w-100 justify-content-center py-3 rounded-4" style="background:#eef5ff; font-size:1rem;">
+                    <i class="fas fa-calculator text-primary"></i>
+                    <span>Class Average: <strong>{{ class_average }}%</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div style="position: relative; height: 320px; width: 100%;" class="mb-4">
+            {% if chart_labels %}
+            <canvas id="classPerformanceChart"></canvas>
+            {% else %}
+            <div class="alert alert-info text-center">No data for selected filters.</div>
+            {% endif %}
+        </div>
+
+        <!-- Top 3 / Bottom 3 -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h6 class="fw-bold mb-3 text-success"><i class="fas fa-trophy me-2"></i>Top 3 Performers (Overall Avg)</h6>
+                <ul class="list-group list-group-flush">
+                    {% for s in top_performers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center border-0 border-bottom px-0">
+                        <span><i class="fas fa-medal me-2 text-warning"></i>{{ forloop.counter }}. {{ s.name }}</span>
+                        <span class="badge bg-success rounded-pill">{{ s.avg_marks|floatformat:1 }}%</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item border-0 text-muted">No data available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="fw-bold mb-3 text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Bottom 3 (Need Attention)</h6>
+                <ul class="list-group list-group-flush">
+                    {% for s in bottom_performers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center border-0 border-bottom px-0">
+                        <span><i class="fas fa-arrow-down me-2 text-danger"></i>{{ forloop.counter }}. {{ s.name }}</span>
+                        <span class="badge bg-danger rounded-pill">{{ s.avg_marks|floatformat:1 }}%</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item border-0 text-muted">No data available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Import Link for Teacher -->
+    <div class="mb-4">
+        <a href="{% url 'teacher_import_results' %}" class="btn btn-outline-primary rounded-pill px-4">
+            <i class="fas fa-file-import me-2"></i>Bulk Import Results (CSV/Excel)
+        </a>
     </div>
 </div>
 
@@ -211,5 +325,39 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{{ chart_labels|json_script:"class-chart-labels" }}
+{{ chart_marks|json_script:"class-chart-marks" }}
+<script>
+const classLabels = JSON.parse(document.getElementById('class-chart-labels').textContent);
+const classMarks = JSON.parse(document.getElementById('class-chart-marks').textContent);
+if (classLabels.length && document.getElementById('classPerformanceChart')) {
+    new Chart(document.getElementById('classPerformanceChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: classLabels,
+            datasets: [{
+                label: 'Marks (%)',
+                data: classMarks,
+                backgroundColor: classMarks.map(m => m >= 80 ? 'rgba(40,167,69,0.75)' : m >= 60 ? 'rgba(78,115,223,0.75)' : 'rgba(220,53,69,0.75)'),
+                borderRadius: 8,
+                maxBarThickness: 50,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } }
+            },
+            scales: {
+                y: { beginAtZero: true, max: 100, grid: { color: '#e2e8f0' }, title: { display: true, text: 'Marks (%)' } },
+                x: { grid: { display: false }, title: { display: true, text: 'Students' } }
+            }
+        }
+    });
+}
+</script>
 </body>
 </html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARAPS | Project User Manual</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3c72;
+            --primary-light: #eef2ff;
+            --secondary: #2a5298;
+            --dark-blue: #0f172a;
+            --bg-light: #f8fafc;
+            --accent: #3b82f6;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+
+        .premium-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem 2rem;
+            border-bottom: 5px solid var(--accent);
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.15);
+        }
+
+        .college-title {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        .brand-logo {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-toc {
+            position: sticky;
+            top: 2rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .toc-link {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            gap: 10px;
+        }
+
+        .toc-link:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .toc-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            scroll-margin-top: 2rem;
+        }
+
+        .section-icon {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-num {
+            background-color: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .role-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+        .badge-admin { background-color: #fef3c7; color: #d97706; }
+        .badge-teacher { background-color: #dbeafe; color: #2563eb; }
+        .badge-student { background-color: #d1fae5; color: #059669; }
+
+        .mock-interface {
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: 16px;
+            padding: 1.25rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            border: 1px solid #334155;
+            margin: 1.5rem 0;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .mock-header {
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            color: #94a3b8;
+        }
+
+        .table-custom {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        .table-custom th {
+            background-color: #f1f5f9;
+            color: var(--dark-blue);
+            font-weight: 600;
+            padding: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .table-custom td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tips-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .alert-box {
+            background-color: #fff1f2;
+            border-left: 4px solid #f43f5e;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        footer {
+            background-color: var(--dark-blue);
+            color: #94a3b8;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            margin-top: 4rem;
+            border-top: 4px solid var(--accent);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Print styling rules */
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            .premium-header {
+                background: none;
+                color: black;
+                border-bottom: 2px solid black;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 1.5rem 0;
+                text-align: center;
+            }
+            .college-title, .brand-logo, .premium-header p {
+                color: black !important;
+            }
+            .sidebar-toc, .toc-column, .back-to-top, .btn-portal {
+                display: none !important;
+            }
+            .content-column {
+                width: 100% !important;
+            }
+            .section-card {
+                box-shadow: none;
+                border: none;
+                border-bottom: 1px solid #ccc;
+                padding: 1.5rem 0;
+                page-break-inside: avoid;
+            }
+            .section-icon {
+                display: none !important;
+            }
+            .mock-interface {
+                background: white;
+                color: black;
+                border: 1px solid #ccc;
+                box-shadow: none;
+            }
+            .mock-header {
+                border-bottom: 1px solid #ccc;
+                color: black;
+            }
+            footer {
+                background: none;
+                color: black;
+                border-top: 1px solid #ccc;
+                padding: 1.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="premium-header text-center">
+    <div class="container">
+        <span class="college-title"><i class="fas fa-university me-2"></i>Govt. Sadiq Egerton Graduate College Bahawalpur</span>
+        <h1 class="brand-logo mt-2">ARAPS</h1>
+        <p class="fs-5 mb-0">Academic Result Analysis & Prediction System</p>
+        <span class="badge bg-light text-dark mt-3 px-3 py-2 fw-semibold">SYSTEM USER MANUAL</span>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Sidebar Navigation (Table of Contents) -->
+        <div class="col-lg-3 col-md-4 toc-column d-print-none mb-4">
+            <div class="sidebar-toc">
+                <h5 class="fw-bold mb-3 text-secondary"><i class="fas fa-bars-staggered me-2"></i>Manual Contents</h5>
+                <nav class="nav flex-column">
+                    <a class="toc-link" href="#introduction"><i class="fas fa-info-circle"></i>1. Introduction</a>
+                    <a class="toc-link" href="#login-guide"><i class="fas fa-sign-in-alt"></i>2. How to Login</a>
+                    <a class="toc-link" href="#admin-guide"><i class="fas fa-user-shield"></i>3. Admin Guide</a>
+                    <a class="toc-link" href="#teacher-guide"><i class="fas fa-chalkboard-teacher"></i>4. Teacher Guide</a>
+                    <a class="toc-link" href="#student-guide"><i class="fas fa-graduation-cap"></i>5. Student Guide</a>
+                    <a class="toc-link" href="#credentials"><i class="fas fa-table-list"></i>6. Credentials Table</a>
+                    <a class="toc-link" href="#troubleshooting"><i class="fas fa-bug"></i>7. Troubleshooting</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9 col-md-8 content-column">
+            
+            <!-- SECTION 1: INTRODUCTION -->
+            <section id="introduction" class="section-card">
+                <div class="section-icon"><i class="fas fa-info-circle"></i></div>
+                <h2 class="fw-bold mb-3">1. Introduction</h2>
+                <hr class="mb-4">
+                <p>
+                    <strong>ARAPS</strong> (Academic Result Analysis and Prediction System) is a state-of-the-art academic web portal designed to monitor and improve student academic performance. 
+                    By utilizing linear regression algorithms, ARAPS processes previous result data to generate predictive charts, subject-wise progression trends, and GPA trackers.
+                </p>
+                <h5 class="fw-bold mt-4 mb-3">Target Users & Roles</h5>
+                <ul>
+                    <li class="mb-2"><strong>Admin Panel Users</strong>: Superusers who configure accounts, groups, system structures, and view logs.</li>
+                    <li class="mb-2"><strong>Teachers</strong>: Staff who manage individual marks, track attendance, analyze class cohorts, and import bulk result spreadsheets.</li>
+                    <li class="mb-2"><strong>Students</strong>: Logged-in students viewing their marks history, letter grades, GPAs, attendance records, predictive outcomes, and trend indicators.</li>
+                </ul>
+                <div class="tips-box mt-4">
+                    <h6 class="fw-bold text-primary mb-2"><i class="fas fa-link me-2"></i>Live System URL</h6>
+                    <p class="mb-0">Access the portal live at: <a href="https://myresult-two.vercel.app" target="_blank" class="fw-semibold">https://myresult-two.vercel.app</a></p>
+                </div>
+            </section>
+
+            <!-- SECTION 2: HOW TO LOGIN -->
+            <section id="login-guide" class="section-card">
+                <div class="section-icon"><i class="fas fa-sign-in-alt"></i></div>
+                <h2 class="fw-bold mb-3">2. How to Login</h2>
+                <hr class="mb-4">
+                <p>Accessing the system requires valid credentials. Follow these steps to sign in:</p>
+                
+                <h5 class="fw-bold mt-4 mb-3">Step-by-Step Instructions</h5>
+                <div class="d-flex flex-column gap-3 mb-4">
+                    <div>
+                        <span class="step-num">1</span> 
+                        Open your browser and navigate to the portal: <a href="https://myresult-two.vercel.app" target="_blank">https://myresult-two.vercel.app</a>.
+                    </div>
+                    <div>
+                        <span class="step-num">2</span> 
+                        You will be greeted by the college landing page. Click the large blue <strong>Access Portal</strong> button.
+                    </div>
+                    <div>
+                        <span class="step-num">3</span> 
+                        On the Login form, enter your registered <strong>Username</strong> and <strong>Password</strong> exactly (case-sensitive).
+                    </div>
+                    <div>
+                        <span class="step-num">4</span> 
+                        Click the <strong>Sign In</strong> button to log in.
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">Visual Layout Mockup of the Login Form</h5>
+                <div class="mock-interface">
+                    <div class="mock-header">
+                        <span>Portal Login Screen</span>
+                        <span><i class="fas fa-lock"></i> Secured</span>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h5 class="text-white mb-3">ARAPS PORTAL LOGIN</h5>
+                        <div class="mb-3 text-start">
+                            <label class="text-white-50 small d-block mb-1">Username</label>
+                            <input type="text" class="form-control bg-dark border-secondary text-white rounded-pill" value="student1" disabled>
+                        </div>
+                        <div class="mb-3 text-start">
+                            <label class="text-white-50 small d-block mb-1">Password</label>
+                            <input type="password" class="form-control bg-dark border-secondary text-white rounded-pill" value="••••••••••" disabled>
+                        </div>
+                        <button class="btn btn-primary rounded-pill px-4 w-100" disabled>Sign In</button>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">Role-Based Redirects</h5>
+                <p>After clicking <strong>Sign In</strong>, the system automatically detects your role and forwards you to the corresponding panel:</p>
+                <ul>
+                    <li class="mb-2"><span class="role-badge badge-admin">Admin</span> redirects directly to the backoffice administrator interface: <code>/admin/</code>.</li>
+                    <li class="mb-2"><span class="role-badge badge-teacher">Teacher</span> redirects to the teacher marks panel: <code>/teacher/marks/</code>.</li>
+                    <li class="mb-2"><span class="role-badge badge-student">Student</span> redirects to the personal student dashboard: <code>/dashboard/</code>.</li>
+                </ul>
+
+                <h5 class="fw-bold mt-4 mb-3">How to Logout</h5>
+                <p>To sign out securely, locate the red <strong>Logout</strong> button in the navigation bar at the top-right of your panel. Click it to terminate your session and return to the login interface.</p>
+            </section>
+
+            <!-- SECTION 3: ADMIN GUIDE -->
+            <section id="admin-guide" class="section-card">
+                <div class="section-icon"><i class="fas fa-user-shield"></i></div>
+                <h2 class="fw-bold mb-3">3. Admin Guide</h2>
+                <hr class="mb-4">
+                <p>Administrators manage the system configuration, view transaction logs, and manage student accounts.</p>
+
+                <h5 class="fw-bold mt-4 mb-3">3.1 Accessing the Admin Panel</h5>
+                <p>Logged-in administrators can access the backoffice panel directly by appending <code>/admin/</code> to the domain name: <a href="https://myresult-two.vercel.app/admin/" target="_blank">https://myresult-two.vercel.app/admin/</a>.</p>
+
+                <h5 class="fw-bold mt-4 mb-3">3.2 Adding a Student</h5>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div><span class="step-num">1</span> Navigate to <strong>Users</strong> (under Authentication) → click <strong>Add User</strong>. Set username/password.</div>
+                    <div><span class="step-num">2</span> Go to <strong>Students</strong> (under Students app) → click <strong>Add Student</strong>. Link the newly created User account, enter their full name, roll number, and class name (e.g. BSCS-7A). Click Save.</div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">3.3 Adding a Teacher</h5>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div><span class="step-num">1</span> Navigate to <strong>Users</strong> → click <strong>Add User</strong>. Input username and password.</div>
+                    <div><span class="step-num">2</span> Under the user's details, scroll to the <strong>Groups</strong> section. Assign them to the <strong>Teacher</strong> group by moving it to the "Chosen Groups" column.</div>
+                    <div><span class="step-num">3</span> Click <strong>Save</strong> at the bottom of the page.</div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">3.4 Viewing Audit Logs</h5>
+                <p>Audit logs track critical events (e.g. when attendance is taken). Navigate to <strong>Audit Logs</strong> (under Results app) to view details, timestamps, and usernames involved in system changes.</p>
+
+                <h5 class="fw-bold mt-4 mb-3">3.5 Viewing All Results and Attendance</h5>
+                <p>Under the Admin Panel, select <strong>Results</strong> or <strong>Attendances</strong> to view, modify, or delete any record in bulk across all students and classes.</p>
+
+                <div class="tips-box mt-4">
+                    <h6 class="fw-bold text-primary mb-2"><i class="fas fa-bolt me-2"></i>Admin Bulk Import Shortcut</h6>
+                    <p class="mb-0">A top-menu shortcut titled <strong>Bulk Import Students</strong> is available on the administrator navigation header. You can click this to upload student listings directly without going through multiple Django forms.</p>
+                </div>
+            </section>
+
+            <!-- SECTION 4: TEACHER GUIDE -->
+            <section id="teacher-guide" class="section-card">
+                <div class="section-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h2 class="fw-bold mb-3">4. Teacher Guide</h2>
+                <hr class="mb-4">
+                <p>Teachers enter student results, track attendance, and analyze class performance.</p>
+
+                <h5 class="fw-bold mt-4 mb-3">4.1 Adding Student Marks</h5>
+                <p>Navigate to the **Marks Management** dashboard and find the "Add New Result" card at the top:</p>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div><span class="step-num">1</span> Select a <strong>Student</strong> from the dropdown.</div>
+                    <div><span class="step-num">2</span> Select a <strong>Subject</strong>.</div>
+                    <div><span class="step-num">3</span> Input <strong>Marks</strong> (between 0.0 and 100.0).</div>
+                    <div><span class="step-num">4</span> Input the <strong>Term</strong> (e.g., Mid, Final) and <strong>Year</strong> (e.g., 2025).</div>
+                    <div><span class="step-num">5</span> Click <strong>Add</strong> to commit the record.</div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">4.2 Editing/Deleting Marks</h5>
+                <p>Scroll down to the <strong>All Results</strong> table on the dashboard. Use the yellow <strong>Edit</strong> button to modify results or the red <strong>Delete</strong> button to remove a record. Deleting a record requires confirming the deletion on a confirmation screen showing the grade detail.</p>
+
+                <h5 class="fw-bold mt-4 mb-3">4.3 Marking Attendance</h5>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div><span class="step-num">1</span> Click <strong>Attendance</strong> in the top navigation bar.</div>
+                    <div><span class="step-num">2</span> Select the target <strong>Date</strong>. (Defaults to today's date).</div>
+                    <div><span class="step-num">3</span> For each student, check <strong>Present</strong> or <strong>Absent</strong>.</div>
+                    <div><span class="step-num">4</span> Click the blue <strong>Submit</strong> button to record attendance.</div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">4.4 Class Performance Analytics & Chart</h5>
+                <p>The **Class Performance Analytics** section provides instant cohort calculations:</p>
+                <ul>
+                    <li class="mb-1"><strong>Filters</strong>: Select a Subject, Term, and Year to load records. The page auto-submits and displays analytics.</li>
+                    <li class="mb-1"><strong>Chart.js Bar Chart</strong>: Automatically draws a colored bar representing marks for each student. Bars are color-coded: <strong>Green</strong> (marks &ge; 80%), <strong>Blue</strong> (marks &ge; 60%), and <strong>Red</strong> (marks &lt; 60%).</li>
+                    <li class="mb-1"><strong>Performer Ranks</strong>: Evaluates overall student averages and ranks the **Top 3** and **Bottom 3 (Need Attention)** students automatically.</li>
+                </ul>
+
+                <h5 class="fw-bold mt-4 mb-3">4.5 Bulk Import Results from CSV/Excel</h5>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div><span class="step-num">1</span> Click the <strong>Bulk Import Results (CSV/Excel)</strong> button under the Class Analytics section.</div>
+                    <div><span class="step-num">2</span> Click <strong>Download Sample CSV Template</strong> to get the correct spreadsheet format.</div>
+                    <div><span class="step-num">3</span> Open the template in Excel or Google Sheets, add student marks (using roll numbers or usernames), and save the file.</div>
+                    <div><span class="step-num">4</span> Click **Choose File**, select your spreadsheet, and click **Upload and Import**.</div>
+                </div>
+                <div class="alert-box">
+                    <h6 class="fw-bold text-danger mb-2"><i class="fas fa-triangle-exclamation me-2"></i>Atomic Validation Rule</h6>
+                    <p class="mb-0 small">The bulk import engine is atomic. If a single row is incorrect (e.g. invalid roll number, marks out of range), the entire import is aborted. Correct all errors printed on the page and re-upload.</p>
+                </div>
+            </section>
+
+            <!-- SECTION 5: STUDENT GUIDE -->
+            <section id="student-guide" class="section-card">
+                <div class="section-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h2 class="fw-bold mb-3">5. Student Guide</h2>
+                <hr class="mb-4">
+                <p>Students can review their academic progress, check prediction metrics, and download results reports.</p>
+
+                <h5 class="fw-bold mt-4 mb-3">5.1 Student Dashboard Overview</h5>
+                <p>Upon log in, the Student Dashboard renders cards displaying summary metrics:</p>
+                <ul>
+                    <li class="mb-2"><strong>Overall GPA</strong>: The average grade points calculated across all results on a 4.0 scale.</li>
+                    <li class="mb-2"><strong>Term GPA</strong>: Calculated specifically for your latest enrolled semester (e.g., Final 2024).</li>
+                    <li class="mb-2"><strong>Attendance Percentage</strong>: Total present days divided by total tracked calendar days.</li>
+                </ul>
+
+                <h5 class="fw-bold mt-4 mb-3">5.2 Understanding Predictions & Grades</h5>
+                <ul>
+                    <li class="mb-2"><strong>Letter Grade</strong>: Next to each subject, you will see your grade (e.g. A, B+, B, C, F) calculated dynamically.</li>
+                    <li class="mb-2"><strong>Predicted Next Marks</strong>: ARAPS generates a predicted percentage score for your next term. This indicates your expected outcome if you maintain your current learning rate. If you only have one result, it will safely show "N/A" (as at least two results are needed for regression).</li>
+                </ul>
+
+                <h5 class="fw-bold mt-4 mb-3">5.3 Subject Performance Trends</h5>
+                <p>Your performance trends are evaluated using linear regression lines and displayed as color-coded indicators:</p>
+                <ul>
+                    <li class="mb-1"><span class="badge bg-success"><i class="fas fa-arrow-trend-up me-1"></i> Improving</span>: Marks trend upward across terms.</li>
+                    <li class="mb-1"><span class="badge bg-primary"><i class="fas fa-arrow-right me-1"></i> Stable</span>: Marks show minor natural fluctuations.</li>
+                    <li class="mb-1"><span class="badge bg-danger"><i class="fas fa-arrow-trend-down me-1"></i> Declining</span>: Marks trend downward across terms.</li>
+                </ul>
+
+                <h5 class="fw-bold mt-4 mb-3">5.4 Downloading/Printing Results Report</h5>
+                <p>To print or download your report card as a PDF:</p>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <div><span class="step-num">1</span> Click the **HTML Report** button on the student dashboard.</div>
+                    <div><span class="step-num">2</span> Press <strong>Ctrl + P</strong> (Command + P on Mac) on your keyboard to open the browser print dialog.</div>
+                    <div><span class="step-num">3</span> Select **Save as PDF** as the destination printer. Choose layout orientation and click **Save**.</div>
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">5.5 Viewing Notifications</h5>
+                <p>Locate the **Bell icon** in your dashboard header. The number count shows unread messages. Click it to view details on newly uploaded marks or announcements.</p>
+            </section>
+
+            <!-- SECTION 6: CREDENTIALS SUMMARY TABLE -->
+            <section id="credentials" class="section-card">
+                <div class="section-icon"><i class="fas fa-table-list"></i></div>
+                <h2 class="fw-bold mb-3">6. Credentials Summary Table</h2>
+                <hr class="mb-4">
+                <p>Use the following credentials to access the demo workspace in your browser:</p>
+                
+                <div class="table-responsive mt-3">
+                    <table class="table table-custom">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Linked Full Name / Profile</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="role-badge badge-admin">Admin</span></td>
+                                <td><code>adil123</code></td>
+                                <td><code>araps123</code></td>
+                                <td>Administrator Profile</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-teacher">Teacher</span></td>
+                                <td><code>teacher1</code></td>
+                                <td><code>teacher123</code></td>
+                                <td>Imran Sheikh</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 1</span></td>
+                                <td><code>student1</code></td>
+                                <td><code>student123</code></td>
+                                <td>Ali Hassan (Roll: 21801401) [Improving Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 2</span></td>
+                                <td><code>student2</code></td>
+                                <td><code>student123</code></td>
+                                <td>Sara Fatima (Roll: 21801402) [Improving Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 3</span></td>
+                                <td><code>student3</code></td>
+                                <td><code>student123</code></td>
+                                <td>Bilal Ahmed (Roll: 21801403) [Improving Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 4</span></td>
+                                <td><code>student4</code></td>
+                                <td><code>student123</code></td>
+                                <td>Ayesha Siddiqui (Roll: 21801404) [Stable Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 5</span></td>
+                                <td><code>student5</code></td>
+                                <td><code>student123</code></td>
+                                <td>Usman Tariq (Roll: 21801405) [Stable Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 6</span></td>
+                                <td><code>student6</code></td>
+                                <td><code>student123</code></td>
+                                <td>Hina Malik (Roll: 21801406) [Stable Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 7</span></td>
+                                <td><code>student7</code></td>
+                                <td><code>student123</code></td>
+                                <td>Hamza Raza (Roll: 21801407) [Stable Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 8</span></td>
+                                <td><code>student8</code></td>
+                                <td><code>student123</code></td>
+                                <td>Mahnoor Khan (Roll: 21801408) [Declining Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 9</span></td>
+                                <td><code>student9</code></td>
+                                <td><code>student123</code></td>
+                                <td>Faisal Iqbal (Roll: 21801409) [Declining Trend]</td>
+                            </tr>
+                            <tr>
+                                <td><span class="role-badge badge-student">Student 10</span></td>
+                                <td><code>student10</code></td>
+                                <td><code>student123</code></td>
+                                <td>Zainab Yousuf (Roll: 21801410) [Declining Trend]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 7: TROUBLESHOOTING -->
+            <section id="troubleshooting" class="section-card">
+                <div class="section-icon"><i class="fas fa-bug"></i></div>
+                <h2 class="fw-bold mb-3">7. Troubleshooting</h2>
+                <hr class="mb-4">
+                <p>Refer to the table below if you encounter issues while navigating the portal:</p>
+
+                <div class="accordion mt-3" id="troubleAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
+                                <span class="fw-bold text-danger me-2"><i class="fas fa-circle-exclamation"></i> Issue:</span> "Wrong username or password" Error
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#troubleAccordion">
+                            <div class="accordion-body">
+                                Make sure Caps Lock is off, check for extra whitespace characters when pasting, and reference the <a href="#credentials">Credentials Table</a> for exact values.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                <span class="fw-bold text-danger me-2"><i class="fas fa-circle-exclamation"></i> Issue:</span> "Forbidden (403)" Error Screen
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#troubleAccordion">
+                            <div class="accordion-body">
+                                This typically occurs due to active cookies from a different account. Log out cleanly by visiting <a href="https://myresult-two.vercel.app/logout/" target="_blank">https://myresult-two.vercel.app/logout/</a>, clear your browser cookies, and attempt login again.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                <span class="fw-bold text-danger me-2"><i class="fas fa-circle-exclamation"></i> Issue:</span> Page Not Found (404)
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#troubleAccordion">
+                            <div class="accordion-body">
+                                Verify the URL matches exactly. For example, the teacher panel is located at <code>/teacher/marks/</code> and the student portal is at <code>/dashboard/</code>.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                <span class="fw-bold text-danger me-2"><i class="fas fa-circle-exclamation"></i> Issue:</span> Deployed CSS Styles Not Rendering / Layout Broken
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#troubleAccordion">
+                            <div class="accordion-body">
+                                Perform a hard refresh by pressing <strong>Ctrl + Shift + R</strong> (or <strong>Cmd + Shift + R</strong> on Mac) to bypass cached stylesheets and force-fetch the updated CSS rules.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p class="mb-1"><strong>ARAPS</strong> — Academic Result Analysis & Prediction System</p>
+        <p class="small text-white-50">Govt. Sadiq Egerton Graduate College Bahawalpur. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Simple scroll spy logic to update active class in TOC
+    window.addEventListener('DOMContentLoaded', () => {
+        const links = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('section');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

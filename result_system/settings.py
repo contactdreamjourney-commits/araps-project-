@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-p@utoaiq-_gn*uuti^fqs-d^*p!3dy$(ein@%^b)bwr%f2fp-@
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-# Application definition
+CSRF_TRUSTED_ORIGINS = ['https://myresult-two.vercel.app', 'https://*.vercel.app']
 INSTALLED_APPS = [
     'jazzmin',  # professional admin theme (must be first)
     'django.contrib.admin',

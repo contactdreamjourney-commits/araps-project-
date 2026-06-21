@@ -43,12 +43,18 @@ def teacher_dashboard(request):
     except (ValueError, TypeError):
         sel_year_int = default_year
         
-    # Filter results for cohort
-    cohort_results = Result.objects.filter(
-        subject_id=sel_subject_id,
-        term=sel_term,
-        year=sel_year_int
-    ).select_related('student')
+    # Filter results for cohort safely
+    cohort_results = Result.objects.none()
+    if sel_subject_id:
+        try:
+            sel_subject_id_int = int(sel_subject_id)
+            cohort_results = Result.objects.filter(
+                subject_id=sel_subject_id_int,
+                term=sel_term,
+                year=sel_year_int
+            ).select_related('student')
+        except ValueError:
+            pass
     
     # Average mark
     from django.db.models import Avg
@@ -70,13 +76,17 @@ def teacher_dashboard(request):
         marks = request.POST.get('marks')
         term = request.POST.get('term')
         year = request.POST.get('year', 2025)
-        Result.objects.create(
-            student_id=student_id,
-            subject_id=subject_id,
-            marks=marks,
-            term=term,
-            year=year
-        )
+        if student_id and subject_id:
+            try:
+                Result.objects.create(
+                    student_id=int(student_id),
+                    subject_id=int(subject_id),
+                    marks=marks,
+                    term=term,
+                    year=year
+                )
+            except ValueError:
+                pass
         return redirect('teacher_dashboard')
         
     return render(request, 'teachers/dashboard.html', {
